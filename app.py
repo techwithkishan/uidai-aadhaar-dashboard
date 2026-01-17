@@ -1,6 +1,18 @@
 import pandas as pd
 import streamlit as st
 import plotly.express as px
+import zipfile
+import os
+
+ZIP_PATH = "uidai_cleaned_datewise.zip"
+CSV_PATH = "uidai_cleaned_datewise.csv"
+
+if not os.path.exists(CSV_PATH):
+    with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
+        zip_ref.extractall()
+
+df = pd.read_csv(CSV_PATH)
+
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -26,7 +38,6 @@ st.title("🇮🇳 UIDAI Aadhaar Enrollment Dashboard")
 st.caption("Interactive analysis of state-wise, temporal, district-level and age-wise Aadhaar enrollments")
 
 # ---------------- LOAD DATA ----------------
-df = pd.read_csv("uidai_cleaned_datewise.csv")
 df['date'] = pd.to_datetime(df['date'])
 
 # ---------------- FEATURE ENGINEERING ----------------
